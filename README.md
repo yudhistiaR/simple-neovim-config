@@ -135,6 +135,8 @@ Berisi semua shortcut utama.
 * `<leader>fg` — cari teks
 * `<leader>fb` — cari buffer
 * `<leader>fr` — recent files
+* `<leader>fk` — tampilkan daftar seluruh keymap aktif (Telescope keymaps)
+* `<leader>?` — alias cepat untuk daftar keymap
 * `<leader>qs` — simpan session
 * `<leader>qr` — restore session
 * `<leader>qd` — hapus session saat ini
