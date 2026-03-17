@@ -20,6 +20,10 @@ keymap("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find files"
 keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Live grep" })
 keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Search buffers" })
 keymap("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Recent files" })
+keymap("n", "<leader>qs", "<cmd>SessionSaveCwd<cr>", { desc = "Session save" })
+keymap("n", "<leader>qr", "<cmd>SessionRestoreCwd<cr>", { desc = "Session restore" })
+keymap("n", "<leader>qd", "<cmd>SessionDeleteCwd<cr>", { desc = "Session delete" })
+keymap("n", "<leader>ql", "<cmd>SessionListDisabled<cr>", { desc = "Session list (disabled cross-project)" })
 
 -- =========================
 -- Clipboard / Register safe edits
