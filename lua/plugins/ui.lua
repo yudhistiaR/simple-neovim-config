@@ -308,7 +308,7 @@ return {
     local function lsp_name()
       local clients = vim.lsp.get_clients({ bufnr = 0 })
       if not clients or vim.tbl_isempty(clients) then
-        return "󰅚 No LSP"
+        return "< no_lsp"
       end
 
       local names = {}
@@ -319,10 +319,10 @@ return {
       end
 
       if #names == 0 then
-        return "󰅚 No LSP"
+        return "< no_lsp"
       end
 
-      return " " .. table.concat(names, ", ")
+      return "< " .. table.concat(names, "|")
     end
 
     require("lualine").setup({
