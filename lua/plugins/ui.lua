@@ -240,10 +240,61 @@ return {
     "nvim-telescope/telescope.nvim",
   },
   config = function()
+    local palette = require("solarized-osaka.colors").setup()
+
+    local lualine_theme = {
+      normal = {
+        a = { fg = palette.base03, bg = palette.blue, gui = "bold" },
+        b = { fg = palette.fg, bg = palette.base02 },
+        c = { fg = palette.fg_dark, bg = palette.none },
+      },
+      insert = {
+        a = { fg = palette.base03, bg = palette.green, gui = "bold" },
+      },
+      visual = {
+        a = { fg = palette.base03, bg = palette.magenta, gui = "bold" },
+      },
+      replace = {
+        a = { fg = palette.base03, bg = palette.orange, gui = "bold" },
+      },
+      command = {
+        a = { fg = palette.base03, bg = palette.yellow, gui = "bold" },
+      },
+      inactive = {
+        a = { fg = palette.comment, bg = palette.none, gui = "bold" },
+        b = { fg = palette.comment, bg = palette.none },
+        c = { fg = palette.comment, bg = palette.none },
+      },
+    }
+
+    local mode_icons = {
+      n = "",
+      i = "󰏫",
+      v = "󰈈",
+      ["\22"] = "󰘎",
+      V = "󰈈",
+      c = "",
+      R = "",
+      t = "",
+    }
+
+    local function mode_with_icon(str)
+      local mode = vim.api.nvim_get_mode().mode
+      local icon = mode_icons[mode] or "󰀘"
+      return string.format("%s %s", icon, str)
+    end
+
+    local function file_icon()
+      local filename = vim.fn.expand("%:t")
+      local devicons = require("nvim-web-devicons")
+      local icon, color = devicons.get_icon_color(filename, nil, { default = true })
+      return { icon = icon .. " ", color = { fg = color } }
+    end
+
     local function lsp_name()
       local clients = vim.lsp.get_clients({ bufnr = 0 })
       if not clients or vim.tbl_isempty(clients) then
-        return "No LSP"
+        return "󰅚 No LSP"
       end
 
       local names = {}
@@ -254,18 +305,18 @@ return {
       end
 
       if #names == 0 then
-        return "No LSP"
+        return "󰅚 No LSP"
       end
 
-      return table.concat(names, ", ")
+      return " " .. table.concat(names, ", ")
     end
 
     require("lualine").setup({
       options = {
-        theme = "solarized-osaka",
+        theme = lualine_theme,
         globalstatus = true,
-        component_separators = { left = "│", right = "│" },
-        section_separators = { left = "", right = "" },
+        component_separators = { left = "", right = "" },
+        section_separators = { left = "", right = "" },
         disabled_filetypes = {
           statusline = { "neo-tree", "snacks_dashboard" },
         },
@@ -274,16 +325,16 @@ return {
         lualine_a = {
           {
             "mode",
-            fmt = function(str)
-              return " " .. str .. " "
-            end,
+            fmt = mode_with_icon,
+            separator = { left = "", right = "" },
+            padding = { left = 0, right = 0 },
           },
         },
 
         lualine_b = {
           {
             "branch",
-            icon = "",
+            icon = "",
             on_click = function()
               vim.cmd("Telescope git_branches")
             end,
@@ -291,7 +342,7 @@ return {
           {
             "diff",
             colored = true,
-            symbols = { added = "+", modified = "~", removed = "-" },
+            symbols = { added = " ", modified = " ", removed = " " },
           },
           {
             "diagnostics",
@@ -311,15 +362,16 @@ return {
         },
 
         lualine_c = {
+          file_icon,
           {
             "filename",
             path = 1,
             shorting_target = 40,
             symbols = {
-              modified = "[+]",
-              readonly = "[RO]",
-              unnamed = "[No Name]",
-              newfile = "[New]",
+              modified = " ●",
+              readonly = " ",
+              unnamed = " [No Name]",
+              newfile = " [New]",
             },
             on_click = function()
               require("telescope.builtin").find_files()
@@ -332,6 +384,7 @@ return {
             "searchcount",
             maxcount = 999,
             timeout = 500,
+            icon = "",
           },
           {
             lsp_name,
@@ -342,6 +395,7 @@ return {
             "filetype",
             colored = true,
             icon_only = false,
+            icon = { align = "right" },
           },
         },
 
