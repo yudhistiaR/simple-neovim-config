@@ -36,6 +36,24 @@ return {
 			local auto_session = require("auto-session")
 			auto_session.setup(opts)
 
+			local function git_root_from_cwd()
+				local git_dir = vim.fs.find(".git", { upward = true, path = vim.fn.getcwd() })[1]
+				if not git_dir then
+					return nil
+				end
+				return vim.fs.dirname(git_dir)
+			end
+
+			vim.api.nvim_create_autocmd("VimEnter", {
+				desc = "Normalize cwd to git root for project-scoped sessions",
+				callback = function()
+					local root = git_root_from_cwd()
+					if root and root ~= vim.fn.getcwd() then
+						vim.api.nvim_set_current_dir(root)
+					end
+				end,
+			})
+
 			local session_group = vim.api.nvim_create_augroup("SessionAutoSave", { clear = true })
 
 			vim.api.nvim_create_autocmd({ "VimLeavePre", "FocusLost", "VimSuspend" }, {
