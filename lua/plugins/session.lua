@@ -29,6 +29,7 @@ return {
 			},
 			session_lens = {
 				load_on_setup = false,
+				cwd_only = true,
 			},
 		},
 		config = function(_, opts)
