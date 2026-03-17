@@ -80,6 +80,39 @@ return {
 	},
 
 	{
+		"lewis6991/gitsigns.nvim",
+		event = "BufReadPre",
+		opts = {
+			signs = {
+				add = { text = "▎" },
+				change = { text = "▎" },
+				delete = { text = "" },
+				topdelete = { text = "" },
+				changedelete = { text = "▎" },
+				untracked = { text = "▎" },
+			},
+			current_line_blame = true,
+			current_line_blame_opts = {
+				virt_text = true,
+				virt_text_pos = "eol",
+				delay = 350,
+				ignore_whitespace = false,
+			},
+			preview_config = {
+				border = "rounded",
+			},
+		},
+		keys = {
+			{ "]h", "<cmd>Gitsigns next_hunk<CR>", desc = "Next hunk" },
+			{ "[h", "<cmd>Gitsigns prev_hunk<CR>", desc = "Previous hunk" },
+			{ "<leader>ghs", "<cmd>Gitsigns stage_hunk<CR>", desc = "Stage hunk" },
+			{ "<leader>ghu", "<cmd>Gitsigns reset_hunk<CR>", desc = "Undo hunk" },
+			{ "<leader>ghp", "<cmd>Gitsigns preview_hunk<CR>", desc = "Preview hunk" },
+			{ "<leader>ghb", "<cmd>Gitsigns blame_line<CR>", desc = "Blame line" },
+		},
+	},
+
+	{
 		"nvim-telescope/telescope.nvim",
 		dependencies = {
 			{
