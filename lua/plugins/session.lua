@@ -30,5 +30,19 @@ return {
 				load_on_setup = false,
 			},
 		},
+		config = function(_, opts)
+			local auto_session = require("auto-session")
+			auto_session.setup(opts)
+
+			local session_group = vim.api.nvim_create_augroup("SessionAutoSave", { clear = true })
+
+			vim.api.nvim_create_autocmd({ "VimLeavePre", "FocusLost", "VimSuspend" }, {
+				group = session_group,
+				desc = "Auto save session on exit / focus lost / suspend",
+				callback = function()
+					pcall(vim.cmd, "silent! SessionSave")
+				end,
+			})
+		end,
 	},
 }
