@@ -7,6 +7,7 @@ return {
 			"SessionRestore",
 			"SessionDelete",
 			"SessionSearch",
+			"AutoSession",
 		},
 		opts = {
 			auto_session_enabled = true,
@@ -40,7 +41,11 @@ return {
 				group = session_group,
 				desc = "Auto save session on exit / focus lost / suspend",
 				callback = function()
-					pcall(vim.cmd, "silent! SessionSave")
+					if vim.fn.exists(":AutoSession") == 2 then
+						pcall(vim.cmd, "silent! AutoSession save")
+					else
+						pcall(vim.cmd, "silent! SessionSave")
+					end
 				end,
 			})
 		end,
