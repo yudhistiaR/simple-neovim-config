@@ -22,7 +22,6 @@ return {
         "bashls",
         "dockerls",
       },
-      automatic_enable = false,
     },
   },
 
@@ -93,15 +92,6 @@ return {
         capabilities = capabilities,
       })
 
-      vim.lsp.enable("ts_ls")
-      vim.lsp.enable("tailwindcss")
-      vim.lsp.enable("html")
-      vim.lsp.enable("cssls")
-      vim.lsp.enable("jsonls")
-      vim.lsp.enable("yamlls")
-      vim.lsp.enable("lua_ls")
-      vim.lsp.enable("bashls")
-      vim.lsp.enable("dockerls")
     end,
   },
 
