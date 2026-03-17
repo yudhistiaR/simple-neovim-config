@@ -265,9 +265,9 @@ Menambahkan manajemen session memakai `rmagatti/auto-session`.
 
 ### Fitur
 
-* auto-save session per project
+* auto-save session per project (berbasis root `.git`)
 * restore session manual saat dibutuhkan
-* daftar session via `:AutoSession search` (difilter hanya untuk project/direktori aktif)
+* daftar session via `:AutoSession search` (difilter sesuai root `.git` project aktif)
 * session tidak dibuat untuk direktori umum seperti home dan Downloads
 * tidak menyimpan buffer UI sementara (`neo-tree`, `TelescopePrompt`, `lazy`, dll) agar restore session lebih aman
 * session di-save otomatis saat `VimLeavePre`, `FocusLost`, dan `VimSuspend`
@@ -277,6 +277,7 @@ Menambahkan manajemen session memakai `rmagatti/auto-session`.
 * fitur session ini tidak menonaktifkan Treesitter atau LSP
 * saat `SessionRestore`, buffer akan dibuka ulang lalu plugin berbasis `BufRead` (termasuk Treesitter/LSP attach) tetap berjalan normal
 * untuk kasus laptop mati total (power loss), tidak ada jaminan 100%, tapi autosave di `FocusLost`/`VimSuspend` membantu mengurangi risiko kehilangan session
+* saat masuk dari subfolder project, cwd akan dinormalisasi ke root `.git` agar session konsisten per repository
 
 ## `lua/plugins/neo-tree.lua`
 
