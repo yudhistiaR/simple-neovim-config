@@ -56,6 +56,12 @@ Fokus utama:
 
 ---
 
+## Dokumen Tambahan
+
+- `AI_AGENT.md` — panduan singkat untuk AI agent agar perubahan tetap konsisten, minim konflik keymap, dan dokumentasi selalu terbarui.
+
+---
+
 # File Utama
 
 ## `init.lua`
