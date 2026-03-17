@@ -267,7 +267,7 @@ Menambahkan manajemen session memakai `rmagatti/auto-session`.
 
 * auto-save session per project
 * restore session manual saat dibutuhkan
-* daftar session via `:AutoSession search`
+* daftar session via `:AutoSession search` (difilter hanya untuk project/direktori aktif)
 * session tidak dibuat untuk direktori umum seperti home dan Downloads
 * tidak menyimpan buffer UI sementara (`neo-tree`, `TelescopePrompt`, `lazy`, dll) agar restore session lebih aman
 * session di-save otomatis saat `VimLeavePre`, `FocusLost`, dan `VimSuspend`

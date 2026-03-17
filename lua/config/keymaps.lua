@@ -25,7 +25,7 @@ keymap("n", "<leader>?", "<cmd>Telescope keymaps<cr>", { desc = "List keymaps (q
 keymap("n", "<leader>qs", "<cmd>AutoSession save<cr>", { desc = "Session save" })
 keymap("n", "<leader>qr", "<cmd>AutoSession restore<cr>", { desc = "Session restore" })
 keymap("n", "<leader>qd", "<cmd>AutoSession delete<cr>", { desc = "Session delete" })
-keymap("n", "<leader>ql", "<cmd>AutoSession search<cr>", { desc = "Session list" })
+keymap("n", "<leader>ql", "<cmd>AutoSession search<cr>", { desc = "Session list (current project)" })
 
 -- =========================
 -- Clipboard / Register safe edits
