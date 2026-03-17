@@ -53,6 +53,46 @@ keymap("n", "<leader>nl", "o<Esc>^Da", { desc = "New line below without comment"
 keymap("n", "<leader>nL", "O<Esc>^Da", { desc = "New line above without comment" })
 
 -- =========================
+-- Terminal toggle
+-- =========================
+local terminal_buf = nil
+local terminal_win = nil
+
+local function toggle_terminal()
+	if terminal_win and vim.api.nvim_win_is_valid(terminal_win) then
+		vim.api.nvim_win_close(terminal_win, true)
+		terminal_win = nil
+		return
+	end
+
+	vim.cmd("botright 12split")
+
+	if terminal_buf and vim.api.nvim_buf_is_valid(terminal_buf) then
+		vim.api.nvim_win_set_buf(0, terminal_buf)
+	else
+		vim.cmd("terminal")
+		terminal_buf = vim.api.nvim_get_current_buf()
+	end
+
+	terminal_win = vim.api.nvim_get_current_win()
+	vim.cmd("startinsert")
+end
+
+keymap({ "n", "i", "t" }, "<C-_>", function()
+	if vim.api.nvim_get_mode().mode == "t" then
+		vim.cmd("stopinsert")
+	end
+	toggle_terminal()
+end, { desc = "Toggle terminal" })
+
+keymap("t", "<Esc><Esc>", [[<C-\><C-n>]], { desc = "Exit terminal mode" })
+
+-- =========================
+-- Search
+-- =========================
+keymap("n", "//", "<cmd>Telescope live_grep<cr>", { desc = "Search text in project" })
+
+-- =========================
 -- Tabs
 -- =========================
 keymap("n", "te", ":tabedit<Return>", opts)
@@ -79,7 +119,7 @@ keymap("n", "<C-w><Down>", "<C-w>-", { desc = "Resize split down" })
 -- Diagnostics / LSP
 -- =========================
 keymap("n", "<C-j>", function()
-  vim.diagnostic.goto_next()
+	vim.diagnostic.goto_next()
 end, { desc = "Next diagnostic" })
 
 keymap("n", "gd", vim.lsp.buf.definition, { desc = "Goto definition" })
@@ -88,25 +128,25 @@ keymap("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
 keymap("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" })
 keymap("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
 keymap("n", "<leader>f", function()
-  vim.lsp.buf.format({ async = true })
+	vim.lsp.buf.format({ async = true })
 end, { desc = "Format file" })
 
 -- Inlay hints toggle (Neovim 0.10+ / 0.11+)
 keymap("n", "<leader>ti", function()
-  local enabled = vim.lsp.inlay_hint.is_enabled({})
-  vim.lsp.inlay_hint.enable(not enabled)
+	local enabled = vim.lsp.inlay_hint.is_enabled({})
+	vim.lsp.inlay_hint.enable(not enabled)
 end, { desc = "Toggle inlay hints" })
 
 -- =========================
 -- User commands
 -- =========================
 vim.api.nvim_create_user_command("ToggleAutoformat", function()
-  vim.g.autoformat = not vim.g.autoformat
-  if vim.g.autoformat then
-    print("Autoformat: ON")
-  else
-    print("Autoformat: OFF")
-  end
+	vim.g.autoformat = not vim.g.autoformat
+	if vim.g.autoformat then
+		print("Autoformat: ON")
+	else
+		print("Autoformat: OFF")
+	end
 end, {})
 
 -- default on
