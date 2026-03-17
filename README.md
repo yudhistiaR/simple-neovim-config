@@ -135,6 +135,10 @@ Berisi semua shortcut utama.
 * `<leader>fg` — cari teks
 * `<leader>fb` — cari buffer
 * `<leader>fr` — recent files
+* `<leader>qs` — simpan session
+* `<leader>qr` — restore session
+* `<leader>qd` — hapus session saat ini
+* `<leader>ql` — daftar session
 * `;f` — cari file cepat
 * `;r` — live grep cepat
 * `;;` — resume telescope terakhir
@@ -246,6 +250,23 @@ Kalau perlu sangat ringan, pertimbangkan menonaktifkan:
 * sebagian fitur `snacks.nvim`
 
 ---
+
+## `lua/plugins/session.lua`
+
+Menambahkan manajemen session memakai `rmagatti/auto-session`.
+
+### Fitur
+
+* auto-save session per project
+* restore session manual saat dibutuhkan
+* daftar session via `:SessionSearch`
+* session tidak dibuat untuk direktori umum seperti home dan Downloads
+* tidak menyimpan buffer UI sementara (`neo-tree`, `TelescopePrompt`, `lazy`, dll) agar restore session lebih aman
+
+### Catatan kompatibilitas
+
+* fitur session ini tidak menonaktifkan Treesitter atau LSP
+* saat `SessionRestore`, buffer akan dibuka ulang lalu plugin berbasis `BufRead` (termasuk Treesitter/LSP attach) tetap berjalan normal
 
 ## `lua/plugins/neo-tree.lua`
 
