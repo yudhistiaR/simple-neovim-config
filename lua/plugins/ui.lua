@@ -71,6 +71,7 @@ return {
 
       table.insert(opts.routes, 1, {
         filter = {
+          event = "notify",
           cond = function()
             return not focused
           end,
