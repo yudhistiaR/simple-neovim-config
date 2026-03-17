@@ -262,11 +262,13 @@ Menambahkan manajemen session memakai `rmagatti/auto-session`.
 * daftar session via `:SessionSearch`
 * session tidak dibuat untuk direktori umum seperti home dan Downloads
 * tidak menyimpan buffer UI sementara (`neo-tree`, `TelescopePrompt`, `lazy`, dll) agar restore session lebih aman
+* session di-save otomatis saat `VimLeavePre`, `FocusLost`, dan `VimSuspend`
 
 ### Catatan kompatibilitas
 
 * fitur session ini tidak menonaktifkan Treesitter atau LSP
 * saat `SessionRestore`, buffer akan dibuka ulang lalu plugin berbasis `BufRead` (termasuk Treesitter/LSP attach) tetap berjalan normal
+* untuk kasus laptop mati total (power loss), tidak ada jaminan 100%, tapi autosave di `FocusLost`/`VimSuspend` membantu mengurangi risiko kehilangan session
 
 ## `lua/plugins/neo-tree.lua`
 
