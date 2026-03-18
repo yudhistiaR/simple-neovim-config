@@ -11,26 +11,27 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup("plugins", {
-	checker = { enabled = false },
-	change_detection = {
-		enabled = false,
-		notify = false,
-	},
-	dev = {
-		path = "~/.ghq/github.com",
-	},
-	performance = {
-		cache = {
-			enabled = true,
-		},
-		rtp = {
-			disabled_plugins = {
-				"gzip",
-				"tarPlugin",
-				"tohtml",
-				"tutor",
-				"zipPlugin",
-			},
-		},
-	},
+  defaults = {
+    lazy = true,
+  },
+  install = { colorscheme = { "solarized-osaka" } },
+  checker = { enabled = false },
+  change_detection = {
+    enabled = false,
+    notify = false,
+  },
+  performance = {
+    cache = {
+      enabled = true,
+    },
+    rtp = {
+      disabled_plugins = {
+        "gzip",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
+  },
 })
