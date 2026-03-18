@@ -30,7 +30,6 @@ return {
 		"neovim/nvim-lspconfig",
 		dependencies = {
 			"saghen/blink.cmp",
-			"nvim-telescope/telescope.nvim",
 		},
 		config = function()
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
