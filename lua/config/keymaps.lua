@@ -9,25 +9,6 @@ keymap("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
 keymap("n", "<leader>h", "<cmd>nohlsearch<cr>", { desc = "Clear search highlight" })
 
 -- =========================
--- Explorer / Search
--- =========================
-keymap("n", "<leader>e", "<cmd>Neotree toggle filesystem reveal left<cr>", { desc = "Explorer" })
-keymap("n", "<leader>o", "<cmd>Neotree focus filesystem left<cr>", { desc = "Focus explorer" })
-keymap("n", "<leader>bf", "<cmd>Neotree toggle buffers right<cr>", { desc = "Buffers" })
-keymap("n", "<leader>gs", "<cmd>Neotree toggle git_status right<cr>", { desc = "Git status" })
-
-keymap("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find files" })
-keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Live grep" })
-keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Search buffers" })
-keymap("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Recent files" })
-keymap("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "List keymaps" })
-keymap("n", "<leader>?", "<cmd>Telescope keymaps<cr>", { desc = "List keymaps (quick)" })
-keymap("n", "<leader>qs", "<cmd>AutoSession save<cr>", { desc = "Session save" })
-keymap("n", "<leader>qr", "<cmd>AutoSession restore<cr>", { desc = "Session restore" })
-keymap("n", "<leader>qd", "<cmd>AutoSession delete<cr>", { desc = "Session delete" })
-keymap("n", "<leader>ql", "<cmd>AutoSession search<cr>", { desc = "Session list (current project)" })
-
--- =========================
 -- Clipboard / Register safe edits
 -- =========================
 keymap("n", "x", '"_x', { desc = "Delete char without yanking" })
@@ -94,18 +75,6 @@ end, { desc = "Toggle terminal" })
 keymap("t", "<Esc><Esc>", [[<C-\><C-n>]], { desc = "Exit terminal mode" })
 
 -- =========================
--- Search
--- =========================
-keymap("n", "//", "<cmd>Telescope live_grep<cr>", { desc = "Search text in project" })
-
--- =========================
--- Tabs
--- =========================
-keymap("n", "te", ":tabedit<Return>", opts)
-keymap("n", "<tab>", ":tabnext<Return>", opts)
-keymap("n", "<S-tab>", ":tabprev<Return>", opts)
-
--- =========================
 -- Splits
 -- =========================
 keymap("n", "ss", ":split<Return>", opts)
@@ -122,26 +91,11 @@ keymap("n", "<C-w><Up>", "<C-w>+", { desc = "Resize split up" })
 keymap("n", "<C-w><Down>", "<C-w>-", { desc = "Resize split down" })
 
 -- =========================
--- Diagnostics / LSP
+-- Diagnostics
 -- =========================
 keymap("n", "<C-j>", function()
 	vim.diagnostic.goto_next()
 end, { desc = "Next diagnostic" })
-
-keymap("n", "gd", vim.lsp.buf.definition, { desc = "Goto definition" })
-keymap("n", "gr", vim.lsp.buf.references, { desc = "References" })
-keymap("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
-keymap("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" })
-keymap("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
-keymap("n", "<leader>f", function()
-	vim.lsp.buf.format({ async = true })
-end, { desc = "Format file" })
-
--- Inlay hints toggle (Neovim 0.10+ / 0.11+)
-keymap("n", "<leader>ti", function()
-	local enabled = vim.lsp.inlay_hint.is_enabled({})
-	vim.lsp.inlay_hint.enable(not enabled)
-end, { desc = "Toggle inlay hints" })
 
 -- =========================
 -- User commands

@@ -9,6 +9,12 @@ return {
 			"SessionSearch",
 			"AutoSession",
 		},
+		keys = {
+			{ "<leader>qs", "<cmd>AutoSession save<cr>", desc = "Session save" },
+			{ "<leader>qr", "<cmd>AutoSession restore<cr>", desc = "Session restore" },
+			{ "<leader>qd", "<cmd>AutoSession delete<cr>", desc = "Session delete" },
+			{ "<leader>ql", "<cmd>AutoSession search<cr>", desc = "Session list (current project)" },
+		},
 		opts = {
 			auto_session_enabled = true,
 			auto_save_enabled = true,

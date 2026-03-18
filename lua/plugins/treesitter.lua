@@ -21,6 +21,7 @@ return {
         "luadoc",
         "markdown",
         "markdown_inline",
+        "mdx",
         "query",
         "regex",
         "tsx",

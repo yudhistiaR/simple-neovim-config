@@ -1,5 +1,16 @@
 return {
 	{
+		"folke/lazydev.nvim",
+		ft = "lua", -- hanya muat untuk file lua
+		opts = {
+			library = {
+				-- Muat tipe data untuk plugin lazy.nvim juga
+				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+			},
+		},
+	},
+
+	{
 		"williamboman/mason.nvim",
 		cmd = "Mason",
 		build = ":MasonUpdate",
@@ -67,6 +78,28 @@ return {
 		dependencies = {
 			"saghen/blink.cmp",
 			"williamboman/mason-lspconfig.nvim",
+		},
+		keys = {
+			{ "gd", vim.lsp.buf.definition, desc = "Goto definition" },
+			{ "gr", vim.lsp.buf.references, desc = "References" },
+			{ "K", vim.lsp.buf.hover, desc = "Hover" },
+			{ "<leader>rn", vim.lsp.buf.rename, desc = "Rename symbol" },
+			{ "<leader>ca", vim.lsp.buf.code_action, desc = "Code action" },
+			{
+				"<leader>f",
+				function()
+					vim.lsp.buf.format({ async = true })
+				end,
+				desc = "Format file",
+			},
+			{
+				"<leader>ti",
+				function()
+					local enabled = vim.lsp.inlay_hint.is_enabled({})
+					vim.lsp.inlay_hint.enable(not enabled)
+				end,
+				desc = "Toggle inlay hints",
+			},
 		},
 	},
 

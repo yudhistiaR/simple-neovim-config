@@ -11,6 +11,9 @@ return {
         end,
         desc = "Explorer NeoTree (cwd)",
       },
+      { "<leader>o", "<cmd>Neotree focus filesystem left<cr>", desc = "Focus explorer" },
+      { "<leader>bf", "<cmd>Neotree toggle buffers right<cr>", desc = "Buffers" },
+      { "<leader>gs", "<cmd>Neotree toggle git_status right<cr>", desc = "Git status" },
     },
     dependencies = {
       "nvim-lua/plenary.nvim",
