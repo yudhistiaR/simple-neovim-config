@@ -26,57 +26,60 @@ return {
       enable_git_status = true,
       enable_diagnostics = true,
 
-			default_component_configs = {
-				indent = {
-					with_markers = true,
-					indent_size = 2,
-				},
-				git_status = {
-					symbols = {
-						added = "✚",
-						modified = "",
-						deleted = "✖",
-						renamed = "󰁕",
-						untracked = "",
-						ignored = "",
-						unstaged = "󰄱",
-						staged = "",
-						conflict = "",
-					},
-				},
-			},
+      default_component_configs = {
+        indent = {
+          with_markers = true,
+          indent_size = 2,
+        },
+        git_status = {
+          symbols = {
+            added = "✚",
+            modified = "",
+            deleted = "✖",
+            renamed = "󰁕",
+            untracked = "",
+            ignored = "",
+            unstaged = "󰄱",
+            staged = "",
+            conflict = "",
+          },
+        },
+      },
 
-			window = {
-				position = "left",
-				width = 36,
-			},
+      window = {
+        position = "left",
+        width = 36,
+      },
 
-			filesystem = {
-				filtered_items = {
-					visible = true,
-					hide_dotfiles = false,
-					hide_gitignored = false,
-				},
-				follow_current_file = {
-					enabled = true,
-				},
-				use_libuv_file_watcher = true,
-				hijack_netrw_behavior = "open_current",
-				window = {
-					mappings = {
-						["/"] = "filter_as_you_type",
-						["<C-x>"] = "clear_filter",
-						["a"] = "add",
-						["A"] = "add_directory",
-						["r"] = "rename",
-						["c"] = "copy",
-						["x"] = "cut_to_clipboard",
-						["p"] = "paste_from_clipboard",
-						["d"] = "delete",
-						["m"] = "move",
-					},
-				},
-			},
-		},
-	},
+      filesystem = {
+        filtered_items = {
+          visible = false,
+          hide_dotfiles = true,
+          hide_gitignored = false,
+          hide_by_name = {
+            "node_modules",
+          },
+        },
+        follow_current_file = {
+          enabled = true,
+        },
+        use_libuv_file_watcher = true,
+        hijack_netrw_behavior = "open_current",
+        window = {
+          mappings = {
+            ["/"] = "filter_as_you_type",
+            ["<C-x>"] = "clear_filter",
+            ["a"] = "add",
+            ["A"] = "add_directory",
+            ["r"] = "rename",
+            ["c"] = "copy",
+            ["x"] = "cut_to_clipboard",
+            ["p"] = "paste_from_clipboard",
+            ["d"] = "delete",
+            ["m"] = "move",
+          },
+        },
+      },
+    },
+  },
 }
