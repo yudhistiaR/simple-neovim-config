@@ -11,6 +11,10 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup("plugins", {
+  defaults = {
+    lazy = true,
+  },
+  install = { colorscheme = { "solarized-osaka" } },
   checker = { enabled = false },
   change_detection = {
     enabled = false,
