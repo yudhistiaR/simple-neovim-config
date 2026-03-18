@@ -304,40 +304,6 @@ return {
 	},
 
 	{
-		"saghen/blink.cmp",
-		opts = function(_, opts)
-			opts = opts or {}
-			opts.completion = opts.completion or {}
-			opts.completion.menu = opts.completion.menu or {}
-			opts.completion.menu.winblend = vim.o.pumblend
-
-			opts.signature = opts.signature or {}
-			opts.signature.window = opts.signature.window or {}
-			opts.signature.window.winblend = vim.o.pumblend
-
-			return opts
-		end,
-	},
-
-	{
-		"stevearc/conform.nvim",
-		opts = {
-			formatters_by_ft = {
-				javascript = { "prettier" },
-				javascriptreact = { "prettier" },
-				typescript = { "prettier" },
-				typescriptreact = { "prettier" },
-				css = { "prettier" },
-				html = { "prettier" },
-				json = { "prettier" },
-				yaml = { "prettier" },
-				markdown = { "prettier" },
-				lua = { "stylua" },
-			},
-		},
-	},
-
-	{
 		"windwp/nvim-ts-autotag",
 		event = { "BufReadPre", "BufNewFile" },
 		opts = {
@@ -348,6 +314,14 @@ return {
 			},
 			per_filetype = {
 				["html"] = {
+					enable_close = true,
+					enable_rename = true,
+				},
+				["typescript"] = {
+					enable_close = true,
+					enable_rename = true,
+				},
+				["javascript"] = {
 					enable_close = true,
 					enable_rename = true,
 				},
