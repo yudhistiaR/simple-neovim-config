@@ -11,6 +11,40 @@ return {
 	},
 
 	{
+		"folke/trouble.nvim",
+		cmd = "Trouble",
+		opts = {},
+		keys = {
+			{
+				"<leader>xx",
+				"<cmd>Trouble diagnostics toggle<cr>",
+				desc = "Diagnostics (Trouble)",
+			},
+			{
+				"<leader>xX",
+				"<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+				desc = "Buffer Diagnostics (Trouble)",
+			},
+			{
+				"<leader>cs",
+				"<cmd>Trouble symbols toggle focus=false<cr>",
+				desc = "Symbols (Trouble)",
+			},
+			{
+				"<leader>cl",
+				"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+				desc = "LSP Definitions / references / ... (Trouble)",
+			},
+		},
+	},
+
+	{
+		"b0o/SchemaStore.nvim",
+		lazy = true,
+		version = false,
+	},
+
+	{
 		"williamboman/mason.nvim",
 		cmd = "Mason",
 		build = ":MasonUpdate",
@@ -19,6 +53,7 @@ return {
 				"stylua",
 				"prettierd",
 				"eslint-lsp",
+				"vtsls",
 			},
 			ui = {
 				border = "rounded",
@@ -34,7 +69,7 @@ return {
 		},
 		opts = {
 			ensure_installed = {
-				"ts_ls",
+				"vtsls",
 				"tailwindcss",
 				"html",
 				"cssls",
@@ -45,31 +80,78 @@ return {
 				"dockerls",
 				"eslint",
 			},
-			handlers = {
-				function(server_name)
-					local capabilities = require("blink.cmp").get_lsp_capabilities()
-					local opts = {
-						capabilities = capabilities,
-					}
-
-					if server_name == "lua_ls" then
-						opts.settings = {
-							Lua = {
-								diagnostics = { globals = { "vim" } },
-								workspace = { checkThirdParty = false },
-								hint = { enable = true },
-							},
-						}
-					elseif server_name == "eslint" then
-						opts.settings = {
-							silent = true,
-						}
-					end
-
-					require("lspconfig")[server_name].setup(opts)
-				end,
-			},
+			automatic_installation = false,
 		},
+		config = function(_, opts)
+			require("mason-lspconfig").setup(opts)
+
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+			for _, server_name in ipairs(opts.ensure_installed) do
+				local server_opts = {
+					capabilities = capabilities,
+				}
+
+				if server_name == "lua_ls" then
+					server_opts.settings = {
+						Lua = {
+							workspace = { checkThirdParty = false },
+							hint = { enable = true },
+						},
+					}
+				elseif server_name == "eslint" then
+					server_opts.settings = {
+						silent = true,
+					}
+				elseif server_name == "vtsls" then
+					server_opts.settings = {
+						vtsls = {
+							autoUseWorkspaceTsdk = true,
+							experimental = {
+								completion = {
+									enableServerSideFuzzyMatch = true,
+								},
+							},
+						},
+						typescript = {
+							updateImportsOnFileMove = { enabled = "always" },
+							suggest = {
+								completeFunctionCalls = true,
+							},
+							inlayHints = {
+								enumMemberValues = { enabled = true },
+								functionLikeReturnTypes = { enabled = true },
+								parameterNames = { enabled = "literals" },
+								parameterTypes = { enabled = true },
+								propertyDeclarationTypes = { enabled = true },
+								variableTypes = { enabled = false },
+							},
+						},
+					}
+				elseif server_name == "jsonls" then
+					server_opts.settings = {
+						json = {
+							schemas = require("schemastore").json.schemas(),
+							validate = { enable = true },
+						},
+					}
+				elseif server_name == "yamlls" then
+					server_opts.settings = {
+						yaml = {
+							schemaStore = {
+								enable = false,
+								url = "",
+							},
+							schemas = require("schemastore").yaml.schemas(),
+						},
+					}
+				end
+
+				if server_name ~= "ts_ls" then
+					require("lspconfig")[server_name].setup(server_opts)
+				end
+			end
+		end,
 	},
 
 	{
@@ -79,28 +161,42 @@ return {
 			"saghen/blink.cmp",
 			"williamboman/mason-lspconfig.nvim",
 		},
-		keys = {
-			{ "gd", vim.lsp.buf.definition, desc = "Goto definition" },
-			{ "gr", vim.lsp.buf.references, desc = "References" },
-			{ "K", vim.lsp.buf.hover, desc = "Hover" },
-			{ "<leader>rn", vim.lsp.buf.rename, desc = "Rename symbol" },
-			{ "<leader>ca", vim.lsp.buf.code_action, desc = "Code action" },
-			{
-				"<leader>f",
-				function()
-					vim.lsp.buf.format({ async = true })
+		config = function()
+			-- Gunakan LspAttach untuk memuat keymaps hanya ketika LSP aktif pada buffer tersebut
+			vim.api.nvim_create_autocmd("LspAttach", {
+				group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+				callback = function(ev)
+					local function opts(desc)
+						return { buffer = ev.buf, desc = desc }
+					end
+
+					vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts("Goto definition"))
+					vim.keymap.set("n", "gr", vim.lsp.buf.references, opts("References"))
+					vim.keymap.set("n", "K", vim.lsp.buf.hover, opts("Hover"))
+					vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts("Rename symbol"))
+					vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts("Code action"))
+					
+					vim.keymap.set("n", "<leader>f", function()
+						require("conform").format({ async = true, lsp_format = "fallback" })
+					end, opts("Format file"))
+
+					vim.keymap.set("n", "<leader>ti", function()
+						local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = ev.buf })
+						vim.lsp.inlay_hint.enable(not enabled, { bufnr = ev.buf })
+					end, opts("Toggle inlay hints"))
+
+					local client = vim.lsp.get_client_by_id(ev.data.client_id)
+					if client and client.name == "vtsls" then
+						vim.keymap.set("n", "<leader>co", function()
+							vim.lsp.buf.execute_command({
+								command = "typescript.organizeImports",
+								arguments = { vim.api.nvim_buf_get_name(ev.buf) },
+							})
+						end, opts("Organize Imports"))
+					end
 				end,
-				desc = "Format file",
-			},
-			{
-				"<leader>ti",
-				function()
-					local enabled = vim.lsp.inlay_hint.is_enabled({})
-					vim.lsp.inlay_hint.enable(not enabled)
-				end,
-				desc = "Toggle inlay hints",
-			},
-		},
+			})
+		end,
 	},
 
 	{

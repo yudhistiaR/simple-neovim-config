@@ -16,6 +16,7 @@ return {
 			{ "<leader>ql", "<cmd>AutoSession search<cr>", desc = "Session list (current project)" },
 		},
 		opts = {
+			log_level = "error",
 			auto_session_enabled = true,
 			auto_save_enabled = true,
 			auto_restore_enabled = false,
